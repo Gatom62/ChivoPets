@@ -1,4 +1,4 @@
-import nodemiler from "nodemailer"
+import nodemailer from "nodemailer"
 import crypto from "crypto"
 import jsonwebtoken from "jsonwebtoken"
 import bcrypt from "bcryptjs"
@@ -8,8 +8,8 @@ import { error, info } from "console"
 
 const userRegiterController = {}
 
-userRegiterController.login = async (req, res) => {
-    const {email, password} = req.body
+userRegiterController.register = async (req, res) => {
+    const {name, lastName, email, password, phone, address} = req.body
 
         try {
             const existUser = await userModel.findOne({email})
@@ -44,9 +44,10 @@ userRegiterController.login = async (req, res) => {
 
             res.cookie("verificationToken", tokenCode, {maxAge: 15*60*60*1000})
 
-            const transporter = nodemiler.createTransport({
+            const transporter = nodemailer.createTransport({
                 service: "gmail",
-                auth: {user: config.email.user_email,
+                auth: {
+                    user: config.email.user_email,
                     pass: config.email.user_password
                 }
             })
